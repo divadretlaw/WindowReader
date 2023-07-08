@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS)
 struct WindowKey: EnvironmentKey {
     static var defaultValue: UIWindow? {
         nil
@@ -63,7 +63,7 @@ struct CaptureWindow: ViewModifier {
             .environment(\.window, window)
     }
 }
-#else
+#elseif os(macOS)
 struct WindowKey: EnvironmentKey {
     static var defaultValue: NSWindow? {
         nil

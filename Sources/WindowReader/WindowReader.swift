@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS)
 /// A container view that reads the current window
 ///
 /// This view reads the current window and makes the window
@@ -54,7 +54,7 @@ private struct _WindowReader: UIViewRepresentable {
     func updateUIView(_ uiView: WindowInjectView, context: Context) {
     }
 }
-#else
+#elseif os(macOS)
 /// A container view that reads the current window
 ///
 /// This view reads the current window and makes the window

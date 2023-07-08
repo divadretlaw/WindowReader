@@ -5,7 +5,7 @@
 //  Created by David Walter on 12.08.22.
 //
 
-#if canImport(UIKit)
+#if os(iOS) || os(tvOS)
 import UIKit
 
 class WindowInjectView: InjectView {
@@ -45,7 +45,7 @@ class InjectView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-#else
+#elseif os(macOS)
 import AppKit
 
 class WindowInjectView: InjectView {
