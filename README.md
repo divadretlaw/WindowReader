@@ -4,9 +4,7 @@ Access the current `UIWindow ` or `NSWindow` from SwiftUI
 
 ## Usage
 
-### SwiftUI Lifecycle
-
-Read the current `UIWindow` with `WindowReader`
+Read the current `UIWindow` or `NSWindow` with `WindowReader`
 
 ```swift
 @main
