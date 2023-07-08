@@ -23,7 +23,7 @@ public struct WindowReader<Content>: View where Content: View {
         } else {
             Color.clear
                 .readWindow {
-                    self.window = $0
+                    window = $0
                 }
         }
     }
@@ -52,7 +52,6 @@ private struct _WindowReader: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: WindowInjectView, context: Context) {
-        
     }
 }
 #else
@@ -71,7 +70,7 @@ public struct WindowReader<Content>: View where Content: View {
         } else {
             Color.clear
                 .readWindow {
-                    self.window = $0
+                    window = $0
                 }
         }
     }
@@ -100,7 +99,6 @@ private struct _WindowReader: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: WindowInjectView, context: Context) {
-        
     }
 }
 #endif
