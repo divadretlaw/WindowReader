@@ -8,7 +8,7 @@
 #if os(iOS) || os(tvOS)
 import UIKit
 
-class WindowInjectView: InjectView {
+final class WindowInjectView: InjectView {
     var onUpdate: (UIWindow) -> Void
     
     init(onUpdate: @escaping (UIWindow) -> Void) {
@@ -48,7 +48,7 @@ class InjectView: UIView {
 #elseif os(macOS)
 import AppKit
 
-class WindowInjectView: InjectView {
+final class WindowInjectView: InjectView {
     var onUpdate: (NSWindow) -> Void
     
     init(onUpdate: @escaping (NSWindow) -> Void) {

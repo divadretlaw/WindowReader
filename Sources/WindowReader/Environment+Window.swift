@@ -27,11 +27,11 @@ extension EnvironmentValues {
 
 extension View {
     /// Sets the window for this presentation. If no window is provided,
-    /// the current windows will be determined using `View.captureWindow`
+    /// the current window will be determined using ``captureWindow(perform:)``
     ///
     /// - Parameter window: The `UIWindow` to use for this presentation
     ///
-    /// - Returns: A view where the given or captured windows is available for child views
+    /// - Returns: A view where the given or captured window is available for child views
     @ViewBuilder public func window(_ window: UIWindow? = nil) -> some View {
         if let window = window {
             environment(\.window, window)
@@ -44,7 +44,7 @@ extension View {
     ///
     /// - Parameter action: The action to perform when the `UIWindow` is found.
     ///
-    /// - Returns: A view where the current windows is available for child views
+    /// - Returns: A view where the current window is available for child views
     public func captureWindow(perform action: ((UIWindow) -> Void)? = nil) -> some View {
         modifier(CaptureWindow(action: action))
     }
@@ -83,11 +83,11 @@ extension EnvironmentValues {
 
 extension View {
     /// Sets the window for this presentation. If no window is provided,
-    /// the current windows will be determined using `View.captureWindow`
+    /// the current window will be determined using ``View/captureWindow``
     ///
     /// - Parameter window: The `NSWindow` to use for this presentation
     ///
-    /// - Returns: A view where the given or captured windows is available for child views
+    /// - Returns: A view where the given or captured window is available for child views
     @ViewBuilder public func window(_ window: NSWindow? = nil) -> some View {
         if let window = window {
             environment(\.window, window)
@@ -100,7 +100,7 @@ extension View {
     ///
     /// - Parameter action: The action to perform when the `NSWindow` is found.
     ///
-    /// - Returns: A view where the current windows is available for child views
+    /// - Returns: A view where the current window is available for child views
     public func captureWindow(perform action: ((NSWindow) -> Void)? = nil) -> some View {
         modifier(CaptureWindow(action: action))
     }

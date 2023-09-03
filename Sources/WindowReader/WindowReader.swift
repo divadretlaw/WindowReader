@@ -21,10 +21,9 @@ public struct WindowReader<Content>: View where Content: View {
             content(window)
                 .environment(\.window, window)
         } else {
-            Color.clear
-                .readWindow {
-                    window = $0
-                }
+            _WindowReader {
+                window = $0
+            }
         }
     }
     
@@ -68,10 +67,9 @@ public struct WindowReader<Content>: View where Content: View {
             content(window)
                 .environment(\.window, window)
         } else {
-            Color.clear
-                .readWindow {
-                    window = $0
-                }
+            _WindowReader {
+                window = $0
+            }
         }
     }
     
