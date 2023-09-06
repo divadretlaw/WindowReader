@@ -11,7 +11,7 @@ import SwiftUI
 /// A container view that reads the current window
 ///
 /// This view reads the current window and makes the window
-/// available in the `Envionment`
+/// available in the `Environment`
 public struct WindowReader<Content>: View where Content: View {
     @ViewBuilder var content: (UIWindow) -> Content
     @State private var window: UIWindow?
@@ -57,7 +57,7 @@ private struct _WindowReader: UIViewRepresentable {
 /// A container view that reads the current window
 ///
 /// This view reads the current window and makes the window
-/// available in the `Envionment`
+/// available in the `Environment`
 public struct WindowReader<Content>: View where Content: View {
     @ViewBuilder var content: (NSWindow) -> Content
     @State private var window: NSWindow?
