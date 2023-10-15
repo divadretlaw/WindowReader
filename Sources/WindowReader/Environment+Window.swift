@@ -8,9 +8,15 @@
 import SwiftUI
 
 #if os(iOS) || os(tvOS)
-struct WindowKey: EnvironmentKey {
+private struct WindowKey: EnvironmentKey {
     static var defaultValue: UIWindow? {
         nil
+    }
+}
+
+private struct WindowLevelKey: EnvironmentKey {
+    static var defaultValue: UIWindow.Level {
+        .normal
     }
 }
 
@@ -22,6 +28,15 @@ extension EnvironmentValues {
     public var window: UIWindow? {
         get { self[WindowKey.self] }
         set { self[WindowKey.self] = newValue }
+    }
+    
+    /// The window level of this environment.
+    ///
+    /// Read this environment value from within a view to find the window level for
+    /// this presentation. If no `UIWindow.Level` was set then it will default to `.normal`
+    public var windowLevel: UIWindow.Level {
+        get { self[WindowLevelKey.self] }
+        set { self[WindowLevelKey.self] = newValue }
     }
 }
 
@@ -51,7 +66,7 @@ extension View {
 }
 
 struct CaptureWindow: ViewModifier {
-    @State var window: UIWindow?
+    @State private var window: UIWindow?
     var action: ((UIWindow) -> Void)?
     
     func body(content: Content) -> some View {
@@ -61,12 +76,19 @@ struct CaptureWindow: ViewModifier {
                 action?($0)
             }
             .environment(\.window, window)
+            .environment(\.windowLevel, window?.windowLevel ?? .normal)
     }
 }
 #elseif os(macOS)
-struct WindowKey: EnvironmentKey {
+private struct WindowKey: EnvironmentKey {
     static var defaultValue: NSWindow? {
         nil
+    }
+}
+
+private struct WindowLevelKey: EnvironmentKey {
+    static var defaultValue: NSWindow.Level {
+        .normal
     }
 }
 
@@ -78,6 +100,15 @@ extension EnvironmentValues {
     public var window: NSWindow? {
         get { self[WindowKey.self] }
         set { self[WindowKey.self] = newValue }
+    }
+    
+    /// The window level of this environment.
+    ///
+    /// Read this environment value from within a view to find the window level for
+    /// this presentation. If no `NSWindow.Level` was set then it will default to `.normal`
+    public var windowLevel: NSWindow.Level {
+        get { self[WindowLevelKey.self] }
+        set { self[WindowLevelKey.self] = newValue }
     }
 }
 
@@ -107,7 +138,7 @@ extension View {
 }
 
 struct CaptureWindow: ViewModifier {
-    @State var window: NSWindow?
+    @State private var window: NSWindow?
     var action: ((NSWindow) -> Void)?
     
     func body(content: Content) -> some View {
@@ -117,6 +148,7 @@ struct CaptureWindow: ViewModifier {
                 action?($0)
             }
             .environment(\.window, window)
+            .environment(\.windowLevel, window?.level ?? .normal)
     }
 }
 #endif

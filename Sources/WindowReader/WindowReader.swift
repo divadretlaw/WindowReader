@@ -20,6 +20,7 @@ public struct WindowReader<Content>: View where Content: View {
         if let window = window {
             content(window)
                 .environment(\.window, window)
+                .environment(\.windowLevel, window.windowLevel)
         } else {
             _WindowReader {
                 window = $0
@@ -66,6 +67,7 @@ public struct WindowReader<Content>: View where Content: View {
         if let window = window {
             content(window)
                 .environment(\.window, window)
+                .environment(\.windowLevel, window.level)
         } else {
             _WindowReader {
                 window = $0
