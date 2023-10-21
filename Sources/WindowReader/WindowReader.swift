@@ -22,7 +22,7 @@ public struct WindowReader<Content>: View where Content: View {
                 .environment(\.window, window)
                 .environment(\.windowLevel, window.windowLevel)
         } else {
-            _WindowReader {
+            WindowReaderRepresentable {
                 window = $0
             }
         }
@@ -40,11 +40,19 @@ extension View {
     /// Reads the window of the current view
     /// - Parameter onUpdate: Called whenever the window of the view changes.
     public func readWindow(onUpdate: @escaping (UIWindow) -> Void) -> some View {
-        overlay(_WindowReader(onUpdate: onUpdate))
+        modifier(WindowReaderViewModifier(onUpdate: onUpdate))
     }
 }
 
-private struct _WindowReader: UIViewRepresentable {
+private struct WindowReaderViewModifier: ViewModifier {
+    var onUpdate: (UIWindow) -> Void
+    
+    func body(content: Content) -> some View {
+        content.background(WindowReaderRepresentable(onUpdate: onUpdate))
+    }
+}
+
+private struct WindowReaderRepresentable: UIViewRepresentable {
     var onUpdate: (UIWindow) -> Void
     
     func makeUIView(context: Context) -> WindowInjectView {
@@ -69,7 +77,7 @@ public struct WindowReader<Content>: View where Content: View {
                 .environment(\.window, window)
                 .environment(\.windowLevel, window.level)
         } else {
-            _WindowReader {
+            WindowReaderRepresentable {
                 window = $0
             }
         }
@@ -87,11 +95,19 @@ extension View {
     /// Reads the window of the current view
     /// - Parameter onUpdate: Called whenever the window of the view changes.
     public func readWindow(onUpdate: @escaping (NSWindow) -> Void) -> some View {
-        overlay(_WindowReader(onUpdate: onUpdate))
+        modifier(WindowReaderViewModifier(onUpdate: onUpdate))
     }
 }
 
-private struct _WindowReader: NSViewRepresentable {
+private struct WindowReaderViewModifier: ViewModifier {
+    var onUpdate: (NSWindow) -> Void
+    
+    func body(content: Content) -> some View {
+        content.background(WindowReaderRepresentable(onUpdate: onUpdate))
+    }
+}
+
+private struct WindowReaderRepresentable: NSViewRepresentable {
     var onUpdate: (NSWindow) -> Void
     
     func makeNSView(context: Context) -> WindowInjectView {
