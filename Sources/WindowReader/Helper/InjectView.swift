@@ -5,7 +5,7 @@
 //  Created by David Walter on 12.08.22.
 //
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 import UIKit
 
 final class WindowInjectView: InjectView {

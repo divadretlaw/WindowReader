@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 /// A container view that reads the current window
 ///
 /// This view reads the current window and makes the window

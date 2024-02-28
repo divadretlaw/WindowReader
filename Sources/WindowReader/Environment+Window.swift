@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
 private struct WindowKey: EnvironmentKey {
     static var defaultValue: UIWindow? {
         nil
