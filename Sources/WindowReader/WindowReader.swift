@@ -13,7 +13,8 @@ import SwiftUI
 /// This view reads the current window and makes the window
 /// available in the `Environment`
 public struct WindowReader<Content>: View where Content: View {
-    @ViewBuilder var content: (UIWindow) -> Content
+    public var content: (UIWindow) -> Content
+    
     @State private var window: UIWindow?
     
     public var body: some View {
@@ -25,13 +26,14 @@ public struct WindowReader<Content>: View where Content: View {
             WindowReaderRepresentable {
                 window = $0
             }
+            .accessibility(hidden: true)
         }
     }
     
     /// Creates an instance that can reads the current window
     ///
     /// - Parameter content: The reader's content where the window is accessible
-    public init(@ViewBuilder content: @escaping (UIWindow) -> Content) {
+    @inlinable public init(@ViewBuilder content: @escaping (UIWindow) -> Content) {
         self.content = content
     }
 }
@@ -68,7 +70,8 @@ private struct WindowReaderRepresentable: UIViewRepresentable {
 /// This view reads the current window and makes the window
 /// available in the `Environment`
 public struct WindowReader<Content>: View where Content: View {
-    @ViewBuilder var content: (NSWindow) -> Content
+    public var content: (NSWindow) -> Content
+    
     @State private var window: NSWindow?
     
     public var body: some View {
@@ -80,13 +83,14 @@ public struct WindowReader<Content>: View where Content: View {
             WindowReaderRepresentable {
                 window = $0
             }
+            .accessibility(hidden: true)
         }
     }
     
     /// Creates an instance that can reads the current window
     ///
     /// - Parameter content: The reader's content where the window is accessible
-    public init(@ViewBuilder content: @escaping (NSWindow) -> Content) {
+    @inlinable public init(@ViewBuilder content: @escaping (NSWindow) -> Content) {
         self.content = content
     }
 }

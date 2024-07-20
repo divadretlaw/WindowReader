@@ -42,7 +42,7 @@ extension EnvironmentValues {
 
 extension View {
     /// Sets the window for this presentation. If no window is provided,
-    /// the current window will be determined using ``captureWindow(perform:)``
+    /// the current window will be determined using ``captureWindow(perform:)-36x51``
     ///
     /// - Parameter window: The `UIWindow` to use for this presentation
     ///
@@ -114,7 +114,7 @@ extension EnvironmentValues {
 
 extension View {
     /// Sets the window for this presentation. If no window is provided,
-    /// the current window will be determined using ``View/captureWindow``
+    /// the current window will be determined using ``captureWindow(perform:)-36x51``
     ///
     /// - Parameter window: The `NSWindow` to use for this presentation
     ///
