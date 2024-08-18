@@ -122,3 +122,23 @@ private struct WindowReaderRepresentable: NSViewRepresentable {
     }
 }
 #endif
+
+#Preview {
+    WindowReader { window in
+        VStack {
+            VStack(alignment: .leading) {
+                Text("Window")
+                    .foregroundColor(.primary)
+                #if os(iOS) || os(tvOS) || os(visionOS)
+                Text(window.debugDescription)
+                    .foregroundColor(.secondary)
+                #elseif os(macOS)
+                Text(window.debugDescription)
+                    .foregroundColor(.secondary)
+                #endif
+            }
+            .multilineTextAlignment(.leading)
+        }
+        .padding()
+    }
+}
