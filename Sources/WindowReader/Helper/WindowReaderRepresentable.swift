@@ -10,15 +10,15 @@ import SwiftUI
 #if os(iOS) || os(tvOS) || os(visionOS)
 struct WindowReaderRepresentable: UIViewRepresentable {
     let initial: Bool
-    let onUpdate: (UIWindow) -> Void
+    let action: (UIWindow) -> Void
     
-    init(initial: Bool = true, onUpdate: @escaping (UIWindow) -> Void) {
+    init(initial: Bool = true, perform action: @escaping (UIWindow) -> Void) {
         self.initial = initial
-        self.onUpdate = onUpdate
+        self.action = action
     }
     
     func makeUIView(context: Context) -> WindowInjectView {
-        WindowInjectView(initial: initial, onUpdate: onUpdate)
+        WindowInjectView(initial: initial, perform: action)
     }
     
     func updateUIView(_ nsView: WindowInjectView, context: Context) {
@@ -27,15 +27,15 @@ struct WindowReaderRepresentable: UIViewRepresentable {
 #elseif os(macOS)
 struct WindowReaderRepresentable: NSViewRepresentable {
     let initial: Bool
-    let onUpdate: (NSWindow) -> Void
+    let action: (NSWindow) -> Void
     
-    init(initial: Bool = true, onUpdate: @escaping (NSWindow) -> Void) {
+    init(initial: Bool = true, perform action: @escaping (NSWindow) -> Void) {
         self.initial = initial
-        self.onUpdate = onUpdate
+        self.action = action
     }
     
     func makeNSView(context: Context) -> WindowInjectView {
-        WindowInjectView(initial: initial, onUpdate: onUpdate)
+        WindowInjectView(initial: initial, perform: action)
     }
     
     func updateNSView(_ nsView: WindowInjectView, context: Context) {

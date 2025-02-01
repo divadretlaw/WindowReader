@@ -10,45 +10,51 @@ import SwiftUI
 #if os(iOS) || os(tvOS) || os(visionOS)
 extension View {
     /// Adds an action to be performed when the window of the view changes.
-    /// - Parameter perform: Called when the window of the view changes.
-    public func onWindowChange(initial: Bool = false, perform: @escaping (UIWindow) -> Void) -> some View {
-        modifier(WindowReaderViewModifier(initial: initial, onUpdate: perform))
+    ///
+    /// - Parameters:
+    ///     - initial: Whether the action should be run when the initial window is read.
+    ///     - action: Called when the window of the view changes.
+    public func onWindowChange(initial: Bool = false, perform action: @escaping (UIWindow) -> Void) -> some View {
+        modifier(WindowReaderViewModifier(initial: initial, perform: action))
     }
 }
 
 private struct WindowReaderViewModifier: ViewModifier {
     let initial: Bool
-    let onUpdate: (UIWindow) -> Void
+    let action: (UIWindow) -> Void
     
-    init(initial: Bool, onUpdate: @escaping (UIWindow) -> Void) {
+    init(initial: Bool, perform action: @escaping (UIWindow) -> Void) {
         self.initial = initial
-        self.onUpdate = onUpdate
+        self.action = action
     }
     
     func body(content: Content) -> some View {
-        content.background(WindowReaderRepresentable(initial: initial, onUpdate: onUpdate))
+        content.background(WindowReaderRepresentable(initial: initial, perform: action))
     }
 }
 #elseif os(macOS)
 extension View {
     /// Adds an action to be performed when the window of the view changes.
-    /// - Parameter perform: Called when the window of the view changes.
-    public func onWindowChange(initial: Bool = false, perform: @escaping (NSWindow) -> Void) -> some View {
-        modifier(WindowReaderViewModifier(initial: initial, onUpdate: perform))
+    ///
+    /// - Parameters:
+    ///     - initial: Whether the action should be run when the initial window is read.
+    ///     - action: Called when the window of the view changes.
+    public func onWindowChange(initial: Bool = false, perform action: @escaping (NSWindow) -> Void) -> some View {
+        modifier(WindowReaderViewModifier(initial: initial, perform: action))
     }
 }
 
 private struct WindowReaderViewModifier: ViewModifier {
     let initial: Bool
-    let onUpdate: (NSWindow) -> Void
+    let action: (NSWindow) -> Void
     
-    init(initial: Bool, onUpdate: @escaping (NSWindow) -> Void) {
+    init(initial: Bool, perform action: @escaping (NSWindow) -> Void) {
         self.initial = initial
-        self.onUpdate = onUpdate
+        self.action = action
     }
     
     func body(content: Content) -> some View {
-        content.background(WindowReaderRepresentable(initial: initial, onUpdate: onUpdate))
+        content.background(WindowReaderRepresentable(initial: initial, perform: action))
     }
 }
 #endif

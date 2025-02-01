@@ -10,13 +10,13 @@ import UIKit
 
 final class WindowInjectView: UIView {
     let initial: Bool
-    let onUpdate: (UIWindow) -> Void
+    let action: (UIWindow) -> Void
     
     private var isInitial = true
     
-    init(initial: Bool, onUpdate: @escaping (UIWindow) -> Void) {
+    init(initial: Bool, perform action: @escaping (UIWindow) -> Void) {
         self.initial = initial
-        self.onUpdate = onUpdate
+        self.action = action
         super.init(frame: .zero)
         isHidden = true
         isUserInteractionEnabled = false
@@ -39,13 +39,13 @@ final class WindowInjectView: UIView {
         }
         
         if let window = newWindow {
-            onUpdate(window)
+            action(window)
         } else {
             // In case there was no window yet, we try again slightly delayed
             // This should never happen but is there just in case
             DispatchQueue.main.async { [weak self] in
                 if let window = self?.window {
-                    self?.onUpdate(window)
+                    self?.action(window)
                 }
             }
         }
@@ -56,13 +56,13 @@ import AppKit
 
 final class WindowInjectView: NSView {
     let initial: Bool
-    let onUpdate: (NSWindow) -> Void
+    let action: (NSWindow) -> Void
     
     private var isInitial = true
     
-    init(initial: Bool, onUpdate: @escaping (NSWindow) -> Void) {
+    init(initial: Bool, perform action: @escaping (NSWindow) -> Void) {
         self.initial = initial
-        self.onUpdate = onUpdate
+        self.action = action
         super.init(frame: .zero)
         isHidden = true
     }
@@ -84,13 +84,13 @@ final class WindowInjectView: NSView {
         }
         
         if let window = newWindow {
-            onUpdate(window)
+            action(window)
         } else {
             // In case there was no window yet, we try again slightly delayed
             // This should never happen but is there just in case
             DispatchQueue.main.async { [weak self] in
                 if let window = self?.window {
-                    self?.onUpdate(window)
+                    self?.action(window)
                 }
             }
         }
