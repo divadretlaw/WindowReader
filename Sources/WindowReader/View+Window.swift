@@ -9,12 +9,6 @@ import SwiftUI
 
 #if os(iOS) || os(tvOS) || os(visionOS)
 extension View {
-    /// Reads the window of the current view
-    /// - Parameter onUpdate: Called whenever the window of the view changes.
-    public func readWindow(onUpdate: @escaping (UIWindow) -> Void) -> some View {
-        modifier(WindowReaderViewModifier(initial: true, onUpdate: onUpdate))
-    }
-    
     /// Adds an action to be performed when the window of the view changes.
     /// - Parameter perform: Called when the window of the view changes.
     public func onWindowChange(initial: Bool = false, perform: @escaping (UIWindow) -> Void) -> some View {
@@ -37,12 +31,6 @@ private struct WindowReaderViewModifier: ViewModifier {
 }
 #elseif os(macOS)
 extension View {
-    /// Reads the window of the current view
-    /// - Parameter perform: Called whenever the window of the view changes.
-    public func readWindow(perform: @escaping (NSWindow) -> Void) -> some View {
-        modifier(WindowReaderViewModifier(initial: true, onUpdate: perform))
-    }
-    
     /// Adds an action to be performed when the window of the view changes.
     /// - Parameter perform: Called when the window of the view changes.
     public func onWindowChange(initial: Bool = false, perform: @escaping (NSWindow) -> Void) -> some View {
