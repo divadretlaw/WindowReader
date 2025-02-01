@@ -47,7 +47,7 @@ public extension View {
     /// - Parameter window: The `UIWindow` to use for this presentation
     ///
     /// - Returns: A view where the given or captured window is available for child views
-    @ViewBuilder func window(_ window: UIWindow? = nil) -> some View {
+    @ViewBuilder func withWindow(_ window: UIWindow? = nil) -> some View {
         if let window {
             environment(\.window, window)
         } else {
@@ -119,7 +119,7 @@ public extension View {
     /// - Parameter window: The `NSWindow` to use for this presentation
     ///
     /// - Returns: A view where the given or captured window is available for child views
-    @ViewBuilder func window(_ window: NSWindow? = nil) -> some View {
+    @ViewBuilder func withWindow(_ window: NSWindow? = nil) -> some View {
         if let window {
             environment(\.window, window)
         } else {
