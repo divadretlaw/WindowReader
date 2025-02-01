@@ -20,12 +20,12 @@ private struct WindowLevelKey: EnvironmentKey {
     }
 }
 
-extension EnvironmentValues {
+public extension EnvironmentValues {
     /// The window of this environment.
     ///
     /// Read this environment value from within a view to find the window for
     /// this presentation. If no `UIWindow` was set then it will default to `nil`
-    public var window: UIWindow? {
+    var window: UIWindow? {
         get { self[WindowKey.self] }
         set { self[WindowKey.self] = newValue }
     }
@@ -34,21 +34,21 @@ extension EnvironmentValues {
     ///
     /// Read this environment value from within a view to find the window level for
     /// this presentation. If no `UIWindow.Level` was set then it will default to `.normal`
-    public var windowLevel: UIWindow.Level {
+    var windowLevel: UIWindow.Level {
         get { self[WindowLevelKey.self] }
         set { self[WindowLevelKey.self] = newValue }
     }
 }
 
-extension View {
+public extension View {
     /// Sets the window for this presentation. If no window is provided,
     /// the current window will be determined using ``captureWindow(perform:)-36x51``
     ///
     /// - Parameter window: The `UIWindow` to use for this presentation
     ///
     /// - Returns: A view where the given or captured window is available for child views
-    @ViewBuilder public func window(_ window: UIWindow? = nil) -> some View {
-        if let window = window {
+    @ViewBuilder func window(_ window: UIWindow? = nil) -> some View {
+        if let window {
             environment(\.window, window)
         } else {
             modifier(CaptureWindow())
@@ -60,23 +60,23 @@ extension View {
     /// - Parameter action: The action to perform when the `UIWindow` is found.
     ///
     /// - Returns: A view where the current window is available for child views
-    public func captureWindow(perform action: ((UIWindow) -> Void)? = nil) -> some View {
+    func captureWindow(perform action: ((UIWindow) -> Void)? = nil) -> some View {
         modifier(CaptureWindow(action: action))
     }
 }
 
-struct CaptureWindow: ViewModifier {
+private struct CaptureWindow: ViewModifier {
     @State private var window: UIWindow?
     var action: ((UIWindow) -> Void)?
     
     func body(content: Content) -> some View {
         content
-            .readWindow {
+            .onWindowChange(initial: true) {
                 window = $0
                 action?($0)
             }
             .environment(\.window, window)
-            .environment(\.windowLevel, window?.windowLevel ?? .normal)
+            .environment(\.windowLevel, window?.windowLevel ?? WindowLevelKey.defaultValue)
     }
 }
 #elseif os(macOS)
@@ -92,12 +92,12 @@ private struct WindowLevelKey: EnvironmentKey {
     }
 }
 
-extension EnvironmentValues {
+public extension EnvironmentValues {
     /// The window of this environment.
     ///
     /// Read this environment value from within a view to find the window for
     /// this presentation. If no `NSWindow` was set then it will default to `nil`
-    public var window: NSWindow? {
+    var window: NSWindow? {
         get { self[WindowKey.self] }
         set { self[WindowKey.self] = newValue }
     }
@@ -106,21 +106,21 @@ extension EnvironmentValues {
     ///
     /// Read this environment value from within a view to find the window level for
     /// this presentation. If no `NSWindow.Level` was set then it will default to `.normal`
-    public var windowLevel: NSWindow.Level {
+    var windowLevel: NSWindow.Level {
         get { self[WindowLevelKey.self] }
         set { self[WindowLevelKey.self] = newValue }
     }
 }
 
-extension View {
+public extension View {
     /// Sets the window for this presentation. If no window is provided,
     /// the current window will be determined using ``captureWindow(perform:)-36x51``
     ///
     /// - Parameter window: The `NSWindow` to use for this presentation
     ///
     /// - Returns: A view where the given or captured window is available for child views
-    @ViewBuilder public func window(_ window: NSWindow? = nil) -> some View {
-        if let window = window {
+    @ViewBuilder func window(_ window: NSWindow? = nil) -> some View {
+        if let window {
             environment(\.window, window)
         } else {
             modifier(CaptureWindow())
@@ -132,23 +132,23 @@ extension View {
     /// - Parameter action: The action to perform when the `NSWindow` is found.
     ///
     /// - Returns: A view where the current window is available for child views
-    public func captureWindow(perform action: ((NSWindow) -> Void)? = nil) -> some View {
+    func captureWindow(perform action: ((NSWindow) -> Void)? = nil) -> some View {
         modifier(CaptureWindow(action: action))
     }
 }
 
-struct CaptureWindow: ViewModifier {
+private struct CaptureWindow: ViewModifier {
     @State private var window: NSWindow?
     var action: ((NSWindow) -> Void)?
     
     func body(content: Content) -> some View {
         content
-            .readWindow {
+            .onWindowChange(initial: true) {
                 window = $0
                 action?($0)
             }
             .environment(\.window, window)
-            .environment(\.windowLevel, window?.level ?? .normal)
+            .environment(\.windowLevel, window?.level ?? WindowLevelKey.defaultValue)
     }
 }
 #endif

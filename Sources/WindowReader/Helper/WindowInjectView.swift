@@ -9,9 +9,13 @@
 import UIKit
 
 final class WindowInjectView: UIView {
-    var onUpdate: (UIWindow) -> Void
+    let initial: Bool
+    let onUpdate: (UIWindow) -> Void
     
-    init(onUpdate: @escaping (UIWindow) -> Void) {
+    private var isInitial = true
+    
+    init(initial: Bool, onUpdate: @escaping (UIWindow) -> Void) {
+        self.initial = initial
         self.onUpdate = onUpdate
         super.init(frame: .zero)
         isHidden = true
@@ -25,6 +29,14 @@ final class WindowInjectView: UIView {
     
     override func willMove(toWindow newWindow: UIWindow?) {
         super.willMove(toWindow: newWindow)
+        
+        defer {
+            isInitial = false
+        }
+        
+        if !initial {
+            guard !isInitial else { return }
+        }
         
         if let window = newWindow {
             onUpdate(window)
@@ -43,9 +55,13 @@ final class WindowInjectView: UIView {
 import AppKit
 
 final class WindowInjectView: NSView {
-    var onUpdate: (NSWindow) -> Void
+    let initial: Bool
+    let onUpdate: (NSWindow) -> Void
     
-    init(onUpdate: @escaping (NSWindow) -> Void) {
+    private var isInitial = true
+    
+    init(initial: Bool, onUpdate: @escaping (NSWindow) -> Void) {
+        self.initial = initial
         self.onUpdate = onUpdate
         super.init(frame: .zero)
         isHidden = true
@@ -58,6 +74,14 @@ final class WindowInjectView: NSView {
     
     override func viewWillMove(toWindow newWindow: NSWindow?) {
         super.viewWillMove(toWindow: newWindow)
+        
+        defer {
+            isInitial = false
+        }
+        
+        if !initial {
+            guard !isInitial else { return }
+        }
         
         if let window = newWindow {
             onUpdate(window)

@@ -18,10 +18,13 @@ public struct WindowReader<Content>: View where Content: View {
     @State private var window: UIWindow?
     
     public var body: some View {
-        if let window = window {
+        if let window {
             content(window)
                 .environment(\.window, window)
                 .environment(\.windowLevel, window.windowLevel)
+                .onWindowChange { window in
+                    self.window = window
+                }
         } else {
             WindowReaderRepresentable {
                 window = $0
@@ -33,35 +36,8 @@ public struct WindowReader<Content>: View where Content: View {
     /// Creates an instance that can reads the current window
     ///
     /// - Parameter content: The reader's content where the window is accessible
-    @inlinable public init(@ViewBuilder content: @escaping (UIWindow) -> Content) {
+    public init(@ViewBuilder content: @escaping (UIWindow) -> Content) {
         self.content = content
-    }
-}
-
-extension View {
-    /// Reads the window of the current view
-    /// - Parameter onUpdate: Called whenever the window of the view changes.
-    public func readWindow(onUpdate: @escaping (UIWindow) -> Void) -> some View {
-        modifier(WindowReaderViewModifier(onUpdate: onUpdate))
-    }
-}
-
-private struct WindowReaderViewModifier: ViewModifier {
-    var onUpdate: (UIWindow) -> Void
-    
-    func body(content: Content) -> some View {
-        content.background(WindowReaderRepresentable(onUpdate: onUpdate))
-    }
-}
-
-private struct WindowReaderRepresentable: UIViewRepresentable {
-    var onUpdate: (UIWindow) -> Void
-    
-    func makeUIView(context: Context) -> WindowInjectView {
-        WindowInjectView(onUpdate: onUpdate)
-    }
-    
-    func updateUIView(_ uiView: WindowInjectView, context: Context) {
     }
 }
 #elseif os(macOS)
@@ -75,10 +51,13 @@ public struct WindowReader<Content>: View where Content: View {
     @State private var window: NSWindow?
     
     public var body: some View {
-        if let window = window {
+        if let window {
             content(window)
                 .environment(\.window, window)
                 .environment(\.windowLevel, window.level)
+                .onWindowChange { window in
+                    self.window = window
+                }
         } else {
             WindowReaderRepresentable {
                 window = $0
@@ -90,35 +69,8 @@ public struct WindowReader<Content>: View where Content: View {
     /// Creates an instance that can reads the current window
     ///
     /// - Parameter content: The reader's content where the window is accessible
-    @inlinable public init(@ViewBuilder content: @escaping (NSWindow) -> Content) {
+    public init(@ViewBuilder content: @escaping (NSWindow) -> Content) {
         self.content = content
-    }
-}
-
-extension View {
-    /// Reads the window of the current view
-    /// - Parameter onUpdate: Called whenever the window of the view changes.
-    public func readWindow(onUpdate: @escaping (NSWindow) -> Void) -> some View {
-        modifier(WindowReaderViewModifier(onUpdate: onUpdate))
-    }
-}
-
-private struct WindowReaderViewModifier: ViewModifier {
-    var onUpdate: (NSWindow) -> Void
-    
-    func body(content: Content) -> some View {
-        content.background(WindowReaderRepresentable(onUpdate: onUpdate))
-    }
-}
-
-private struct WindowReaderRepresentable: NSViewRepresentable {
-    var onUpdate: (NSWindow) -> Void
-    
-    func makeNSView(context: Context) -> WindowInjectView {
-        WindowInjectView(onUpdate: onUpdate)
-    }
-    
-    func updateNSView(_ nsView: WindowInjectView, context: Context) {
     }
 }
 #endif
